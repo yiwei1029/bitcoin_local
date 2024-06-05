@@ -51,8 +51,8 @@ async function transfer(privateKey: string, toAddress: string, amount: number) {
     if (!utxo || utxo.txrefs.length === 0) {
         throw new Error('No UTXO found')
     }
-    // console.log('uxto', utxo, '\n----------------------------------------')
-    //选择一个utxo转账
+    // console.log('uxto', utxo,'\n')
+    //选择最后一个utxo转账
     const uxtoToUse = utxo.txrefs[utxo.txrefs.length - 1]
     const txHash = uxtoToUse.tx_hash
     const tx = await getTx(txHash)
@@ -64,7 +64,7 @@ async function transfer(privateKey: string, toAddress: string, amount: number) {
     const fee = 1000
     psbt.addInput({
         hash: txHash,
-        index: uxtoToUse.tx_output_n,
+        index: uxtoToUse.tx_output_n, //
         witnessUtxo: {
             script: Buffer.from(scriptPubKey, 'hex'),
             value: uxtoToUse.value
@@ -121,8 +121,7 @@ const bob = {
     privateKey: 'cN43B6UUZm1VKRKgU3hS5QDFj9bGzAiam4mwhtM5S1ZxGRfx8kDr'
 }
 // getBalance(alice.address).then(console.log)
-// getUTXO(wallet.address).then(console.log)
+// getUTXO(alice.address).then(console.log)
 // getTx('f65c840246486961d86174cfc8089d8b67b1f148d4e7f34d8c3ad23f65446928').then(console.log)
-// transfer(alice.privateKey, bob.address, 10000).then(console.log)
-getBalance(alice.address).then(console.log)
-
+transfer(alice.privateKey, bob.address, 100).then(console.log)
+// getBalance(alice.address).then(console.log)
