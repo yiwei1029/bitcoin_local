@@ -51,19 +51,20 @@ async function transfer(privateKey: string, toAddress: string, amount: number) {
     if (!utxo || utxo.txrefs.length === 0) {
         throw new Error('No UTXO found')
     }
-    console.log('uxto',utxo,'\n----------------------------------------')
+    // console.log('uxto', utxo, '\n----------------------------------------')
     //选择一个utxo转账
-    const uxtoToUse = utxo.txrefs[0]
+    const uxtoToUse = utxo.txrefs[utxo.txrefs.length - 1]
     const txHash = uxtoToUse.tx_hash
     const tx = await getTx(txHash)
-    console.log(tx)
+    // console.log(tx)
     const scriptPubKey = tx.outputs[1].script
     // console.debug('scriptPubKey', scriptPubKey)
     //psbt 实例 partial signed bitcoin transaction
     const psbt = new bitcoin.Psbt({ network: bitcoin.networks.testnet })
+    const fee = 1000
     psbt.addInput({
         hash: txHash,
-        index: 0,
+        index: uxtoToUse.tx_output_n,
         witnessUtxo: {
             script: Buffer.from(scriptPubKey, 'hex'),
             value: uxtoToUse.value
@@ -73,12 +74,21 @@ async function transfer(privateKey: string, toAddress: string, amount: number) {
         address: toAddress,
         value: amount
     })
+    const change = uxtoToUse.value - amount - fee
+    if (change > 0) {
+        psbt.addOutput({
+            address: fromAddress!,
+            value: change
+        })
+    }
     psbt.signInput(0, alice)
     psbt.validateSignaturesOfInput(0, validator)
     psbt.finalizeAllInputs()
     const txHex = psbt.extractTransaction().toHex()
-    console.debug('txHex', txHex)
-
+    // console.debug('txHex', txHex)
+    //广播
+    const res = await broadCast(txHex)
+    return res
 }
 // 生成测试网地址
 function generateTestAddress() {
@@ -113,6 +123,6 @@ const bob = {
 // getBalance(alice.address).then(console.log)
 // getUTXO(wallet.address).then(console.log)
 // getTx('f65c840246486961d86174cfc8089d8b67b1f148d4e7f34d8c3ad23f65446928').then(console.log)
-transfer(alice.privateKey, bob.address, 10000)
-// getBalance(bob.address).then(console.log)
+// transfer(alice.privateKey, bob.address, 10000).then(console.log)
+getBalance(alice.address).then(console.log)
 
