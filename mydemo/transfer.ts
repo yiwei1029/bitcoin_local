@@ -120,7 +120,7 @@ const bob = {
     pubkey: '02a302df6673154a2c12f5582e1351742f2f2707bb7f78f7b354d78d7a0e83ce99',
     privateKey: 'cN43B6UUZm1VKRKgU3hS5QDFj9bGzAiam4mwhtM5S1ZxGRfx8kDr'
 }
-// getBalance(alice.address).then(console.log)
+getBalance(bob.address).then(console.log)
 // getUTXO(alice.address).then(console.log)
 // getTx('f65c840246486961d86174cfc8089d8b67b1f148d4e7f34d8c3ad23f65446928').then(console.log)
 // transfer(alice.privateKey, bob.address, 100).then(console.log)
