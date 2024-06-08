@@ -3,10 +3,10 @@ import ECPairFactory from 'ecpair'
 import * as ecc from 'tiny-secp256k1'
 // 1. 定义私钥
 const privateKey = 'cMzpR4xE5vYcK3BH6pkBi6huSsNDMYtyLDMrwZUsKG8WdoMG32Wr'
-const keyPair = ECPairFactory(ecc).fromWIF(privateKey, bitcoin.networks.regtest)
+const keyPair = ECPairFactory(ecc).fromWIF(privateKey, bitcoin.networks.testnet)
 const pubkey = keyPair.publicKey
-const { address } = bitcoin.payments.p2pkh({ pubkey })
-const { address: p2wpkhAddress } = bitcoin.payments.p2wpkh({ pubkey })
+const { address } = bitcoin.payments.p2pkh({ pubkey :pubkey})
+const { address: p2wpkhAddress } = bitcoin.payments.p2wpkh({ pubkey:pubkey })
 console.log(p2wpkhAddress)
 console.log(address)
 console.log(pubkey.toString('hex'))

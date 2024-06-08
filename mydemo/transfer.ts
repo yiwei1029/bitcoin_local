@@ -7,27 +7,27 @@ import * as bip39 from 'bip39'
 import fetch from 'node-fetch'
 import methods from 'bitcoin-core/src/methods'
 // 查询余额
-async function getBalance(address: string) {
+export async function getBalance(address: string) {
     const url = `https://api.blockcypher.com/v1/btc/test3/addrs/${address}/balance`
     const res = await fetch(url)
     return await res.json()
 
 }
-async function getUTXO(address: string) {
+export async function getUTXO(address: string) {
     const url = `https://api.blockcypher.com/v1/btc/test3/addrs/${address}/?unspentOnly=true`
     const res = await fetch(url)
     return await res.json()
 
 }
 // 交易详情
-async function getTx(txHash: string) {
+export async function getTx(txHash: string) {
     const url = `https://api.blockcypher.com/v1/btc/test3/txs/${txHash}`
     const res = await fetch(url)
     return await res.json()
 
 }
 //广播交易
-async function broadCast(txHex: string) {
+export async function broadCast(txHex: string) {
     const url = `https://api.blockcypher.com/v1/btc/test3/txs/push`
     const res = await fetch(url, {
         method: 'POST',
@@ -37,7 +37,7 @@ async function broadCast(txHex: string) {
     return await res.json()
 }
 // 转账 
-async function transfer(privateKey: string, toAddress: string, amount: number) {
+export async function transfer(privateKey: string, toAddress: string, amount: number) {
     const validator = (publicKey: Buffer, messageHash: Buffer, signature: Buffer) => {
         return ECPairFactory(ecc).fromPublicKey(publicKey).verify(messageHash, signature)
     }
@@ -91,7 +91,7 @@ async function transfer(privateKey: string, toAddress: string, amount: number) {
     return res
 }
 // 生成测试网地址
-function generateTestAddress() {
+export function generateTestAddress() {
     const network = bitcoin.networks.testnet
     const mnemonic = bip39.generateMnemonic()
     const seed = bip39.mnemonicToSeedSync(mnemonic)
@@ -106,7 +106,7 @@ function generateTestAddress() {
     return { mnemonic, address, pubkey: pubkey?.toString('hex'), privateKey }
 
 }
-const wallet0 = generateTestAddress()
+// const wallet0 = generateTestAddress()
 // console.log('wallet', wallet0)
 const alice = {
     mnemonic: 'recycle usual desk speak silent dial emotion injury strong picture setup hold',
@@ -123,5 +123,5 @@ const bob = {
 // getBalance(alice.address).then(console.log)
 // getUTXO(alice.address).then(console.log)
 // getTx('f65c840246486961d86174cfc8089d8b67b1f148d4e7f34d8c3ad23f65446928').then(console.log)
-transfer(alice.privateKey, bob.address, 100).then(console.log)
+// transfer(alice.privateKey, bob.address, 100).then(console.log)
 // getBalance(alice.address).then(console.log)
