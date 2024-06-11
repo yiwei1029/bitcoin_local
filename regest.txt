@@ -1,7 +1,13 @@
 cmd=>C:\Program Files\Bitcoin\daemon
 Then input: bitcoind -regtest -txindex=1 -fallbackfee=0.001 -rpcpassword=pass -rpcuser=user
 
-mining: generatetoaddress 101 $(bitcoin-cli -regtest getnewaddress)
+# 创建钱包
+bitcoin-cli -regtest createwallet [钱包名]
+# 加载钱包
+bitcoin-cli -regtest loadwallet [钱包](刚创建不需要load)
+generate: bitcoin-cli -regtest getnewaddress
+mining: bitcoin-cli -regtest generatetoaddress 101 [address]
+getbalance: bitcoin-cli -regtest getbalance
 sending: sendtoaddress [地址] [数量]
 getrawtransaction/getransaction
 decoderawtransaction
