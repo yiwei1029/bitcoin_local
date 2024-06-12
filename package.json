@@ -5,6 +5,7 @@
     "bitcoin-core": "^4.1.0",
     "bitcoinjs-lib": "^6.1.5",
     "bitcoinjs-message": "^2.2.0",
+    "crypto": "^1.0.1",
     "ecpair": "^2.1.0",
     "node-fetch": "^3.3.2",
     "tiny-secp256k1": "^2.2.1"

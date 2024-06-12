@@ -5,6 +5,7 @@ const client = new Client({
   password: 'pass',
   port: 18443,
   timeout: 10000,
+  // wallet:'wallet4'
 });
 // const wallet1 = new Client({
 //   network: 'regtest',
@@ -13,6 +14,13 @@ const client = new Client({
 //   password: 'pass',
 //   port: 18443,
 // });
-client.getTransaction('92dcf2049ca3e29604be17d830bb9e3a42fef630fa3685afed01f7b31d1051e9').then(res => {
-  client.decodeRawTransaction(res).then(console.log);
-});
+// client.getBestBlockHash().then(console.log);
+// client.createWallet('wallet4').then(console.log);
+// client.loadWallet('wallet4').then(console.log);
+async function main(client) {
+  await client.loadWallet('wallet4').then(console.log);
+  await client.getNewAddress().then(console.log)
+  await client.generateToAddress(10, 'bcrt1qk4fjkdu3psj2rphfsua4yth4w50qe8du8mrq62').then(console.log);
+  await client.getBalances().then(console.log);
+}
+main(client)

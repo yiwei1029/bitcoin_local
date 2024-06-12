@@ -13,6 +13,8 @@ bitcoin-cli -regtest createwallet [钱包名]
 
 bitcoin-cli -regtest loadwallet [钱包] (刚创建不需要load)
 generate: bitcoin-cli -regtest getnewaddress
+
+``bitcoin-cli -regtest generatetoaddress 2 bcrt1qsthw8ygqec64sap9y2el242jteqmvx4870uga0``
 mining: bitcoin-cli -regtest generatetoaddress [数量] [address]
 getbalance: bitcoin-cli -regtest getbalance
 sending: sendtoaddress [地址] [数量]
