@@ -18,9 +18,20 @@ const client = new Client({
 // client.createWallet('wallet4').then(console.log);
 // client.loadWallet('wallet4').then(console.log);
 async function main(client) {
-  await client.loadWallet('wallet4').then(console.log);
-  await client.getNewAddress().then(console.log)
-  await client.generateToAddress(10, 'bcrt1qk4fjkdu3psj2rphfsua4yth4w50qe8du8mrq62').then(console.log);
-  await client.getBalances().then(console.log);
+  try {
+    await client.loadWallet('wallet4').then(console.log);
+  } catch (error) {
+    console.log(error);
+  }
+  const newAddress = await client.getNewAddress()
+  await client.generateToAddress(100, newAddress)
+  await client.getBalances()
+  const toAddress = await client.getNewAddress()
+  console.log({ toAddress })
+  const txHash = await client.sendToAddress(toAddress, 10)
+  // const code = await client.getRawTransaction(txHash)
+  // await client.decodeRawTransaction(code).then(console.log);
+
+  await client.getReceivedByAddress('bcrt1quxlymz9ylxjnkt3arxzgsf8ug0cm7xrq3g3mq2').then(console.log);
 }
 main(client)
